@@ -1,6 +1,6 @@
 # 🚀 Full Stack CI/CD Application
 
-A production-ready full stack application with automated CI/CD pipeline.
+Full stack app with React + Spring Boot + Docker + GitHub Actions CI/CD pipeline.
 
 ## 🛠 Tech Stack
 - Frontend: React
@@ -14,9 +14,9 @@ A production-ready full stack application with automated CI/CD pipeline.
 - Continuous deployment ready
 
 ## 📁 Project Structure
-frontend/ → React app  
-backend/ → Spring Boot API  
-.github/workflows/ → CI/CD pipelines  
+- `frontend/` → React app  
+- `backend/` → Spring Boot API  
+- `.github/workflows/` → CI/CD pipelines  
 
 ## 🚧 Status
 Setup in progress...

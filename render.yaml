@@ -20,7 +20,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: backend
-          property: url
+        value: https://replace-this-after-backend-deploy.onrender.com

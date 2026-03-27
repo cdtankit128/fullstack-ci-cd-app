@@ -11,7 +11,7 @@ services:
   - type: web
     name: frontend
     runtime: static
-    rootContext: ./frontend
+    rootDir: ./frontend
     buildCommand: "npm install && npm run build"
     staticPublishPath: dist
     routes:

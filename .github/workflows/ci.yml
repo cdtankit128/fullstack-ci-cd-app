@@ -41,4 +41,4 @@ jobs:
 
     # ---------------- DOCKER ----------------
     - name: Build Docker images
-      run: docker-compose build
+      run: docker compose build

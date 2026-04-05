@@ -12,7 +12,6 @@ function App() {
     setError(null);
     getHello()
       .then((data) => {
-        // If the API returns text or an object, ensure it's safely set 
         setMessage(typeof data === 'string' ? data : JSON.stringify(data));
       })
       .catch(() => {
@@ -24,7 +23,17 @@ function App() {
   };
 
   useEffect(() => {
-    fetchMessage();
+    // Initial fetch, bypassing outer synchronous setStates
+    getHello()
+      .then((data) => {
+        setMessage(typeof data === 'string' ? data : JSON.stringify(data));
+      })
+      .catch(() => {
+        setError("Failed to connect to the backend.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (

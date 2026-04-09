@@ -46,97 +46,53 @@
   padding: clamp(1.2rem, 4vw, 2.5rem);
   position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(circle at top, #4f46e5 0%, #0f172a 70%),
+    #0f172a;
 }
 
 .login-layout::before,
 .login-layout::after {
   content: "";
   position: absolute;
-  border-radius: 999px;
-  filter: blur(14px);
+  inset: 0;
   z-index: 0;
+  pointer-events: none;
 }
 
 .login-layout::before {
-  width: 360px;
-  height: 360px;
-  top: -120px;
-  right: min(8vw, 84px);
-  background: radial-gradient(circle at 34% 32%, rgba(107, 123, 255, 0.65), rgba(42, 59, 191, 0.08));
-  animation: riseIn 0.5s ease-out;
+  background:
+    radial-gradient(680px 260px at 50% -10%, rgba(148, 163, 184, 0.15), transparent 72%),
+    radial-gradient(420px 220px at 100% 100%, rgba(79, 70, 229, 0.15), transparent 70%);
 }
 
 .login-layout::after {
-  width: 310px;
-  height: 310px;
-  left: min(7vw, 62px);
-  bottom: -92px;
-  background: radial-gradient(circle at 50% 44%, rgba(95, 103, 255, 0.5), rgba(132, 79, 255, 0.06));
-}
-
-.login-layout .noise-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.login-layout::selection {
-  background: rgba(61, 96, 255, 0.24);
-}
-
-.login-card {
-  width: min(420px, 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 22px;
-  background: linear-gradient(152deg, rgba(255, 255, 255, 0.26) 0%, rgba(245, 248, 255, 0.14) 100%);
-  box-shadow:
-    0 30px 68px -42px rgba(20, 23, 86, 0.8),
-    0 12px 30px -18px rgba(11, 36, 102, 0.38);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: clamp(1.2rem, 3.2vw, 1.85rem);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  animation: popIn 0.35s ease-out, cardFloat 5.4s ease-in-out 0.6s infinite;
-}
-
-.login-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(460px 170px at 100% -4%, rgba(95, 120, 255, 0.32) 0%, transparent 74%),
-    radial-gradient(320px 180px at -8% 106%, rgba(148, 119, 255, 0.2) 0%, transparent 72%);
-  pointer-events: none;
-}
-
-.login-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 0.7px, transparent 0.7px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.55px, transparent 0.55px);
   background-size: 3px 3px;
-  opacity: 0.2;
-  pointer-events: none;
+  opacity: 0.09;
 }
 
-.login-card > * {
+.login-mui-card {
   position: relative;
   z-index: 1;
+  animation: popIn 0.35s ease-out;
 }
 
-.login-head {
+.login-logo-wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 0.55rem;
 }
 
 .cu-logo {
   width: 52px;
   height: 52px;
   margin: 0;
+}
+
+.login-logo-centered {
+  width: 62px;
+  height: 62px;
 }
 
 .tag {
@@ -681,19 +637,14 @@ button:disabled {
 }
 
 @media (max-width: 620px) {
-  .login-card,
+  .login-mui-card,
   .hero-panel,
   .todo-panel {
     border-radius: 18px;
   }
 
-  .login-card {
+  .login-mui-card {
     width: min(420px, 100%);
-    padding: 1.05rem;
-  }
-
-  .login-card h1 {
-    font-size: 1.34rem;
   }
 
   .todo-topbar {

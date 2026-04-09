@@ -76,12 +76,28 @@ module.exports = (req, res) => {
       return send(res, 404, { error: "Task not found" });
     }
 
-    const isCompleted = Boolean(body.completed);
-    const updated = {
-      ...todos[idx],
-      completed: isCompleted,
-      completedAt: isCompleted ? new Date().toISOString() : null,
-    };
+    const hasCompleted = typeof body.completed === "boolean";
+    const hasText = Object.prototype.hasOwnProperty.call(body, "text");
+    const nextText = hasText ? String(body.text || "").trim() : "";
+
+    if (!hasCompleted && !hasText) {
+      return send(res, 400, { error: "No valid updates provided" });
+    }
+
+    if (hasText && !nextText) {
+      return send(res, 400, { error: "Task text is required" });
+    }
+
+    const updated = { ...todos[idx] };
+
+    if (hasCompleted) {
+      updated.completed = body.completed;
+      updated.completedAt = body.completed ? new Date().toISOString() : null;
+    }
+
+    if (hasText) {
+      updated.text = nextText;
+    }
 
     todos[idx] = updated;
     return send(res, 200, { uid, todo: updated, todos });

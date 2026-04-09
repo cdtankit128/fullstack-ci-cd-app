@@ -28,10 +28,10 @@ export function createTodo(uid, text) {
   });
 }
 
-export function updateTodo(uid, id, completed) {
+export function updateTodo(uid, id, changes) {
   return request("/api/todos", {
     method: "PATCH",
-    body: JSON.stringify({ uid, id, completed }),
+    body: JSON.stringify({ uid, id, ...changes }),
   });
 }
 

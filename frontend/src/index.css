@@ -1,12 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap");
 
 :root {
-  --ink: #10203b;
-  --muted: #4f5d73;
-  --surface: rgba(255, 255, 255, 0.78);
-  --stroke: #dbe5f3;
-  --primary: #1858d8;
-  --shadow: 0 20px 35px -24px rgba(16, 32, 59, 0.55);
+  --ink: #12203a;
+  --ink-soft: #2d3f5f;
+  --muted: #5a6982;
+  --stroke: #d9e3f2;
+  --stroke-bold: #c5d2e6;
+  --accent: #2270ff;
+  --accent-strong: #184ebf;
+  --accent-ink: #174ba8;
+  --card-surface: rgba(255, 255, 255, 0.84);
+  --shadow-soft: 0 18px 42px -30px rgba(17, 38, 79, 0.5);
 }
 
 * {
@@ -21,12 +25,12 @@ body,
 
 body {
   margin: 0;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(1200px 700px at 10% -10%, #bbd7ff 0%, transparent 50%),
-    radial-gradient(1000px 600px at 100% 10%, #ffc9b0 0%, transparent 46%),
-    linear-gradient(135deg, #eef4ff 0%, #f8fbff 46%, #fff8f1 100%);
+    radial-gradient(880px 440px at 2% -8%, rgba(84, 126, 255, 0.26) 0%, transparent 64%),
+    radial-gradient(980px 470px at 98% 8%, rgba(39, 197, 183, 0.24) 0%, transparent 66%),
+    linear-gradient(145deg, #edf3ff 0%, #edf7ff 44%, #effdfb 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

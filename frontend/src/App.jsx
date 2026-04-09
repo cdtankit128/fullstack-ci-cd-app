@@ -220,15 +220,27 @@ function App() {
             Enter your UID to continue. Valid UID format is 23BCS followed by 5 digits.
           </p>
           <form className="uid-form" onSubmit={handleLogin}>
-            <label htmlFor="uid">ENTER YOUR UID</label>
-            <input
-              id="uid"
-              type="text"
-              value={uidInput}
-              onChange={(e) => setUidInput(e.target.value)}
-              placeholder="23BCS12345"
-            />
-            <button type="submit">Login</button>
+            <div className="uid-field">
+              <span className="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.87 0-7 2.01-7 4.5V20h14v-1.5c0-2.49-3.13-4.5-7-4.5Z" />
+                </svg>
+              </span>
+              <input
+                id="uid"
+                type="text"
+                value={uidInput}
+                onChange={(e) => setUidInput(e.target.value)}
+                placeholder=" "
+              />
+              <label htmlFor="uid">University UID (23BCS12345)</label>
+            </div>
+            <button type="submit">
+              <span>Login</span>
+              <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                <path d="M13 5l7 7-7 7-1.41-1.41L16.17 13H4v-2h12.17l-4.58-4.59L13 5z" />
+              </svg>
+            </button>
           </form>
           {error && <p className="error-text">{error}</p>}
         </section>

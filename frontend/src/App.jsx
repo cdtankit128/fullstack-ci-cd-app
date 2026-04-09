@@ -2,6 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { createTodo, deleteTodo, getTodos, updateTodo } from "./services/api";
 import "./App.css";
 
+function formatDayLabel(isoDate) {
+  return new Date(isoDate).toLocaleDateString("en-US", { weekday: "short" });
+}
+
+function toDateKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
 function App() {
   const [uidInput, setUidInput] = useState("");
   const [uid, setUid] = useState(localStorage.getItem("todo_uid") || "");
@@ -56,6 +64,64 @@ function App() {
       active: todos.length - completed,
     };
   }, [todos]);
+
+  const progressPercent = useMemo(() => {
+    if (!stats.total) {
+      return 0;
+    }
+
+    return Math.round((stats.completed / stats.total) * 100);
+  }, [stats]);
+
+  const consistencyData = useMemo(() => {
+    const dayCounts = new Map();
+    todos
+      .filter((todo) => todo.completed)
+      .forEach((todo) => {
+        const timestamp = todo.completedAt || todo.createdAt;
+        const key = toDateKey(new Date(timestamp));
+        dayCounts.set(key, (dayCounts.get(key) || 0) + 1);
+      });
+
+    const rows = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i -= 1) {
+      const day = new Date(now);
+      day.setDate(now.getDate() - i);
+      const key = toDateKey(day);
+      rows.push({
+        key,
+        day: formatDayLabel(day),
+        count: dayCounts.get(key) || 0,
+      });
+    }
+
+    return rows;
+  }, [todos]);
+
+  const maxDailyCompletions = useMemo(() => {
+    return Math.max(1, ...consistencyData.map((item) => item.count));
+  }, [consistencyData]);
+
+  const consistencyStreak = useMemo(() => {
+    let streak = 0;
+    const completedDaySet = new Set(
+      consistencyData.filter((item) => item.count > 0).map((item) => item.key),
+    );
+
+    const now = new Date();
+    while (true) {
+      const dayKey = toDateKey(now);
+      if (!completedDaySet.has(dayKey)) {
+        break;
+      }
+
+      streak += 1;
+      now.setDate(now.getDate() - 1);
+    }
+
+    return streak;
+  }, [consistencyData]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -137,8 +203,8 @@ function App() {
   };
 
   const clearCompleted = async () => {
-    const completed = todos.filter((todo) => todo.completed).map((todo) => todo.id);
-    for (const id of completed) {
+    const completedIds = todos.filter((todo) => todo.completed).map((todo) => todo.id);
+    for (const id of completedIds) {
       await handleDelete(id);
     }
   };
@@ -147,8 +213,9 @@ function App() {
     return (
       <div className="login-layout">
         <section className="login-card">
+          <img src="/cu-logo.svg" alt="Chandigarh University" className="cu-logo" />
           <p className="tag">Login Required</p>
-          <h1>TO-DO LOGIN PORTAL</h1>
+          <h1>CHANDIGARH UNIVERSITY TODO PORTAL</h1>
           <p className="login-note">
             Enter your UID to continue. Valid UID format is 23BCS followed by 5 digits.
           </p>
@@ -176,23 +243,49 @@ function App() {
           <p className="tag">UID Workspace</p>
           <h1>TO-DO CONTROL CENTER</h1>
           <p>
-            Plan your day using a clean workspace connected to your full stack API.
-            Sign in with your UID to load your personalized task stream.
+            Manage tasks with a live progress tracker, consistency chart, and clear complete/incomplete actions.
           </p>
           <div className="session-row">
-            <p>Signed in as <span>{uid}</span></p>
-            <button className="ghost" onClick={handleLogout}>Switch UID</button>
+            <p>
+              Signed in as <span>{uid}</span>
+            </p>
+            <button type="button" className="ghost" onClick={handleLogout}>
+              Switch UID
+            </button>
           </div>
           {error && <p className="error-text">{error}</p>}
+
+          <div className="progress-wrap">
+            <div className="progress-head">
+              <h3>Progress Tracking</h3>
+              <span>{progressPercent}%</span>
+            </div>
+            <div className="progress-track" aria-label="Task completion progress">
+              <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
+            </div>
+            <p className="progress-meta">
+              {stats.completed} completed out of {stats.total} total tasks. Current consistency streak: {consistencyStreak} day
+              {consistencyStreak === 1 ? "" : "s"}.
+            </p>
+          </div>
         </section>
 
         <section className="todo-panel">
           <div className="todo-topbar">
             <h2>Dashboard</h2>
             <div className="stats">
-              <div><strong>{stats.total}</strong><span>Total</span></div>
-              <div><strong>{stats.active}</strong><span>Active</span></div>
-              <div><strong>{stats.completed}</strong><span>Done</span></div>
+              <div>
+                <strong>{stats.total}</strong>
+                <span>Total</span>
+              </div>
+              <div>
+                <strong>{stats.active}</strong>
+                <span>Active</span>
+              </div>
+              <div>
+                <strong>{stats.completed}</strong>
+                <span>Done</span>
+              </div>
             </div>
           </div>
 
@@ -204,29 +297,81 @@ function App() {
               placeholder="Add a new task"
               disabled={!uid || loading}
             />
-            <button type="submit" disabled={!uid || loading}>Add</button>
+            <button type="submit" disabled={!uid || loading}>
+              Add
+            </button>
           </form>
 
           <div className="filter-row">
-            <button className={filter === "all" ? "active" : ""} onClick={() => setFilter("all")}>All</button>
-            <button className={filter === "active" ? "active" : ""} onClick={() => setFilter("active")}>Active</button>
-            <button className={filter === "completed" ? "active" : ""} onClick={() => setFilter("completed")}>Completed</button>
-            <button className="ghost" onClick={clearCompleted} disabled={!stats.completed}>Clear Completed</button>
+            <button type="button" className={filter === "all" ? "active" : ""} onClick={() => setFilter("all")}>
+              All
+            </button>
+            <button
+              type="button"
+              className={filter === "active" ? "active" : ""}
+              onClick={() => setFilter("active")}
+            >
+              Active
+            </button>
+            <button
+              type="button"
+              className={filter === "completed" ? "active" : ""}
+              onClick={() => setFilter("completed")}
+            >
+              Completed
+            </button>
+            <button type="button" className="ghost" onClick={clearCompleted} disabled={!stats.completed}>
+              Clear Completed
+            </button>
           </div>
 
           <div className="todo-list">
-            {uid && visibleTodos.length === 0 && <p className="empty">No tasks yet. Add your first task.</p>}
-            {!uid && <p className="empty">Log in with UID to start managing tasks.</p>}
+            {visibleTodos.length === 0 && <p className="empty">No tasks yet. Add your first task.</p>}
             {visibleTodos.map((todo) => (
               <article key={todo.id} className={todo.completed ? "todo-item done" : "todo-item"}>
-                <button className="tick" onClick={() => handleToggle(todo)} aria-label="Toggle complete">
-                  {todo.completed ? "Done" : "Todo"}
+                <button
+                  type="button"
+                  className="tick"
+                  onClick={() => handleToggle(todo)}
+                  aria-label="Toggle complete"
+                >
+                  {todo.completed ? "Mark Incomplete" : "Mark Complete"}
                 </button>
-                <p>{todo.text}</p>
-                <button className="remove" onClick={() => handleDelete(todo.id)} aria-label="Delete task">Delete</button>
+                <div className="todo-copy">
+                  <p>{todo.text}</p>
+                  <small>
+                    Created {new Date(todo.createdAt).toLocaleString()} {todo.completedAt ? `| Completed ${new Date(todo.completedAt).toLocaleString()}` : ""}
+                  </small>
+                </div>
+                <button
+                  type="button"
+                  className="remove"
+                  onClick={() => handleDelete(todo.id)}
+                  aria-label="Delete task"
+                >
+                  Delete
+                </button>
               </article>
             ))}
           </div>
+
+          <section className="consistency-card">
+            <h3>Consistency Chart (Last 7 Days)</h3>
+            <div className="chart-grid" role="img" aria-label="Bar chart of completed tasks by day">
+              {consistencyData.map((item) => {
+                const height = Math.max(8, Math.round((item.count / maxDailyCompletions) * 100));
+                return (
+                  <div key={item.key} className="bar-col">
+                    <span className="bar-value">{item.count}</span>
+                    <div className="bar-track">
+                      <div className="bar-fill" style={{ height: `${height}%` }} />
+                    </div>
+                    <span className="bar-day">{item.day}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
         </section>
       </main>
     </div>

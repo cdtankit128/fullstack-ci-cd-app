@@ -76,9 +76,11 @@ module.exports = (req, res) => {
       return send(res, 404, { error: "Task not found" });
     }
 
+    const isCompleted = Boolean(body.completed);
     const updated = {
       ...todos[idx],
-      completed: Boolean(body.completed),
+      completed: isCompleted,
+      completedAt: isCompleted ? new Date().toISOString() : null,
     };
 
     todos[idx] = updated;

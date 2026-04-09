@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none">
+  <defs>
+    <linearGradient id="cuGrad" x1="20" y1="16" x2="160" y2="164" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D47A1"/>
+      <stop offset="1" stop-color="#1E88E5"/>
+    </linearGradient>
+  </defs>
+  <rect x="14" y="14" width="152" height="152" rx="30" fill="url(#cuGrad)"/>
+  <rect x="28" y="28" width="124" height="124" rx="22" stroke="white" stroke-opacity="0.32" stroke-width="2"/>
+  <text x="90" y="92" text-anchor="middle" fill="white" font-family="Space Grotesk, Arial, sans-serif" font-size="54" font-weight="700">CU</text>
+  <text x="90" y="118" text-anchor="middle" fill="white" font-family="IBM Plex Mono, Arial, sans-serif" font-size="10" font-weight="500" letter-spacing="2">CHANDIGARH</text>
+  <text x="90" y="132" text-anchor="middle" fill="white" font-family="IBM Plex Mono, Arial, sans-serif" font-size="10" font-weight="500" letter-spacing="2">UNIVERSITY</text>
+</svg>

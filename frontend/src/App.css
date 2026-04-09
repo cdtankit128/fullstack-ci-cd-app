@@ -17,6 +17,12 @@
     radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.2), transparent 42%);
 }
 
+.cu-logo {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 0.85rem;
+}
+
 .login-card h1 {
   margin: 0;
   font-size: clamp(1.7rem, 2.8vw, 2.4rem);
@@ -234,8 +240,18 @@
   padding: 0.65rem;
 }
 
+.todo-copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
 .todo-item p {
   margin: 0;
+}
+
+.todo-copy small {
+  color: var(--muted);
+  font-size: 0.78rem;
 }
 
 .todo-item.done p {
@@ -266,6 +282,98 @@
   color: var(--muted);
   border-radius: 12px;
   padding: 1rem;
+}
+
+.progress-wrap {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--stroke);
+}
+
+.progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.progress-head span {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #d7e4fb;
+  overflow: hidden;
+  margin-top: 0.55rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1858d8 0%, #2d77ff 100%);
+  transition: width 0.25s ease;
+}
+
+.progress-meta {
+  margin: 0.7rem 0 0;
+  font-size: 0.88rem;
+}
+
+.consistency-card {
+  margin-top: 1rem;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.9rem;
+}
+
+.consistency-card h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.chart-grid {
+  margin-top: 0.65rem;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.45rem;
+  align-items: end;
+}
+
+.bar-col {
+  text-align: center;
+}
+
+.bar-track {
+  height: 86px;
+  border-radius: 9px;
+  border: 1px solid var(--stroke);
+  background: #f3f7ff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 3px;
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #2d77ff 0%, #1858d8 100%);
+}
+
+.bar-value,
+.bar-day {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
 }
 
 button:disabled {

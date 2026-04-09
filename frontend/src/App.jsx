@@ -23,7 +23,6 @@ function App() {
   };
 
   useEffect(() => {
-    // Initial fetch, bypassing outer synchronous setStates
     getHello()
       .then((data) => {
         setMessage(typeof data === 'string' ? data : JSON.stringify(data));
@@ -40,7 +39,7 @@ function App() {
     <div className="app-layout">
       <header className="app-header">
         <div className="header-content">
-          <div className="logo">🚀 CI/CD Explorer</div>
+          <div className="logo">CI/CD Explorer</div>
           <nav className="nav-links">
             <a href="#home" className="active">Home</a>
             <a href="#about">About</a>

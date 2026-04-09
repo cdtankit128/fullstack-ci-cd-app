@@ -1,5 +1,4 @@
 services:
-  # Backend: Docker Web Service
   - type: web
     name: backend-app
     runtime: docker
@@ -8,7 +7,6 @@ services:
     plan: free
     healthCheckPath: /api/hello
 
-  # Frontend: Docker Web Service
   - type: web
     name: frontend-app
     runtime: docker

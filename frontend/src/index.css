@@ -1,6 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  --ink: #10203b;
+  --muted: #4f5d73;
+  --surface: rgba(255, 255, 255, 0.78);
+  --stroke: #dbe5f3;
+  --primary: #1858d8;
+  --shadow: 0 20px 35px -24px rgba(16, 32, 59, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 700px at 10% -10%, #bbd7ff 0%, transparent 50%),
+    radial-gradient(1000px 600px at 100% 10%, #ffc9b0 0%, transparent 46%),
+    linear-gradient(135deg, #eef4ff 0%, #f8fbff 46%, #fff8f1 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

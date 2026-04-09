@@ -261,7 +261,7 @@ function App() {
           elevation={0}
           className="login-mui-card"
           sx={{
-            width: "min(430px, 100%)",
+            width: "min(400px, 100%)",
             p: { xs: 3, sm: 4 },
             backdropFilter: "blur(12px)",
             background: "rgba(255,255,255,0.08)",
@@ -279,9 +279,18 @@ function App() {
           <Typography
             variant="overline"
             sx={{
-              display: "block",
-              letterSpacing: "0.12em",
-              color: "rgba(226,232,240,0.85)",
+              display: "inline-flex",
+              alignItems: "center",
+              px: 1.15,
+              py: 0.35,
+              borderRadius: "999px",
+              border: "1px solid rgba(255,255,255,0.18)",
+              background: "rgba(15,23,42,0.24)",
+              textTransform: "uppercase",
+              fontSize: "0.75rem",
+              letterSpacing: "0.125em",
+              color: "rgba(226,232,240,0.82)",
+              opacity: 0.78,
               fontWeight: 600,
             }}
           >
@@ -297,10 +306,20 @@ function App() {
           </Typography>
 
           <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 3 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                mb: 0.85,
+                fontWeight: 600,
+                color: "rgba(241,245,249,0.9)",
+              }}
+            >
+              University UID
+            </Typography>
+
             <TextField
               fullWidth
               variant="outlined"
-              label="University UID"
               placeholder="23BCS12345"
               value={uidInput}
               onChange={handleUidChange}
@@ -308,32 +327,29 @@ function App() {
               helperText={error || "Format: 23BCS + 5 digits"}
               inputProps={{ maxLength: 10 }}
               sx={{
-                mt: 2,
-                "& .MuiInputBase-input, & .MuiInputLabel-root, & .MuiFormHelperText-root": {
+                "& .MuiInputBase-input, & .MuiFormHelperText-root": {
                   fontFamily: '"Inter", sans-serif',
-                },
-                "& .MuiInputLabel-root": {
-                  color: "rgba(226,232,240,0.8)",
                 },
                 "& .MuiFormHelperText-root": {
                   mt: 1,
-                  color: error ? "#fca5a5" : "rgba(226,232,240,0.72)",
-                  fontSize: "0.78rem",
+                  color: error ? "#fca5a5" : "rgba(255,255,255,0.6)",
+                  fontSize: "13px",
                 },
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "12px",
                   backgroundColor: "rgba(15,23,42,0.35)",
+                  boxShadow: "none",
                   "& fieldset": {
-                    borderColor: "rgba(148,163,184,0.5)",
+                    borderColor: "rgba(255,255,255,0.2)",
                   },
                   "&:hover fieldset": {
-                    borderColor: "rgba(129,140,248,0.75)",
+                    borderColor: "rgba(255,255,255,0.24)",
                   },
                   "&.Mui-focused": {
-                    boxShadow: "0 0 0 4px rgba(99,102,241,0.2)",
+                    boxShadow: "0 0 0 2px rgba(139,92,246,0.5)",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#818cf8",
+                    borderColor: "#8b5cf6",
                   },
                 },
               }}

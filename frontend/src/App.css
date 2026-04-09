@@ -81,7 +81,7 @@
 .login-logo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.3rem;
 }
 
 .cu-logo {
@@ -91,8 +91,8 @@
 }
 
 .login-logo-centered {
-  width: 62px;
-  height: 62px;
+  width: 52px;
+  height: 52px;
 }
 
 .tag {

@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, TextField, Typography } from "@mui/material";
 import { createTodo, deleteTodo, getTodos, updateTodo } from "./services/api";
 import "./App.css";
+
+const UID_PREFIX = "23BCS";
+const UID_REGEX = /^23BCS\d{5}$/;
 
 function formatDayLabel(isoDate) {
   return new Date(isoDate).toLocaleDateString("en-US", { weekday: "short" });
@@ -18,7 +21,38 @@ function App() {
   const [newTask, setNewTask] = useState("");
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const validateUID = (value) => UID_REGEX.test(value);
+
+  const formatUidInput = (rawValue) => {
+    const uppercase = rawValue.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+    if (!uppercase) {
+      return "";
+    }
+
+    if (uppercase.startsWith(UID_PREFIX)) {
+      const digits = uppercase.slice(UID_PREFIX.length).replace(/\D/g, "");
+      return `${UID_PREFIX}${digits}`.slice(0, 10);
+    }
+
+    const digits = uppercase.replace(/\D/g, "");
+    return `${UID_PREFIX}${digits}`.slice(0, 10);
+  };
+
+  const getUidError = (value) => {
+    if (!value) {
+      return "";
+    }
+
+    if (validateUID(value)) {
+      return "";
+    }
+
+    return "Invalid UID format (23BCS + 5 digits).";
+  };
 
   const loadTodos = async (activeUid) => {
     if (!activeUid) {
@@ -124,28 +158,36 @@ function App() {
     return streak;
   }, [consistencyData]);
 
-  const handleLogin = (e) => {
+  const handleUidChange = (e) => {
+    const formattedValue = formatUidInput(e.target.value);
+    setUidInput(formattedValue);
+    setError(getUidError(formattedValue) || null);
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const cleanUid = uidInput.trim();
+    const cleanUid = formatUidInput(uidInput.trim());
+    setUidInput(cleanUid);
+
     if (!cleanUid) {
       setError("Please enter your UID.");
       return;
     }
 
-    const normalizedUid = cleanUid.toUpperCase();
-    if (!normalizedUid.startsWith("23BCS")) {
-      setError("UID must start with 23BCS.");
+    if (!validateUID(cleanUid)) {
+      setError("Please enter a valid UID.");
       return;
     }
 
-    if (!/^23BCS\d{5}$/.test(normalizedUid)) {
-      setError("UID must be in the format 23BCS followed by 5 digits.");
-      return;
-    }
+    setLoginLoading(true);
 
-    localStorage.setItem("todo_uid", normalizedUid);
-    setUid(normalizedUid);
-    setError(null);
+    try {
+      localStorage.setItem("todo_uid", cleanUid);
+      setUid(cleanUid);
+      setError(null);
+    } finally {
+      setLoginLoading(false);
+    }
   };
 
   const handleLogout = () => {
@@ -211,6 +253,8 @@ function App() {
   };
 
   if (!uid) {
+    const isUidValid = validateUID(uidInput);
+
     return (
       <div className="login-layout">
         <Paper
@@ -259,9 +303,10 @@ function App() {
               label="University UID"
               placeholder="23BCS12345"
               value={uidInput}
-              onChange={(e) => setUidInput(e.target.value)}
+              onChange={handleUidChange}
               error={Boolean(error)}
-              helperText={error || "Format: 23BCS12345"}
+              helperText={error || "Format: 23BCS + 5 digits"}
+              inputProps={{ maxLength: 10 }}
               sx={{
                 mt: 2,
                 "& .MuiInputBase-input, & .MuiInputLabel-root, & .MuiFormHelperText-root": {
@@ -299,6 +344,7 @@ function App() {
               variant="contained"
               size="large"
               type="submit"
+              disabled={!isUidValid || loginLoading}
               sx={{
                 mt: 3,
                 borderRadius: "12px",
@@ -311,9 +357,13 @@ function App() {
                   filter: "brightness(1.08)",
                   boxShadow: "0 14px 30px rgba(99,102,241,0.42)",
                 },
+                "&:disabled": {
+                  background: "rgba(100, 116, 139, 0.55)",
+                  color: "rgba(241, 245, 249, 0.82)",
+                },
               }}
             >
-              Continue -&gt;
+              {loginLoading ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : "Continue ->"}
             </Button>
           </Box>
         </Paper>

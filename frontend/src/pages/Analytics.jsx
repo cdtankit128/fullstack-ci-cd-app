@@ -32,7 +32,7 @@ export default function Analytics() {
           {consistencyData.map((item) => {
             const height = Math.max(10, Math.round((item.count / maxDailyCompletions) * 100));
             return (
-              <div key={item.key} className="bar-col">
+              <div key={item.key} className="bar-col" data-tip={`${item.day}: ${item.count} complete`}>
                 <span className="bar-value">{item.count}</span>
                 <div className="bar-track tall">
                   <div className="bar-fill" style={{ height: `${height}%` }} />

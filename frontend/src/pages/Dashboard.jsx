@@ -45,7 +45,7 @@ export default function Dashboard() {
           {consistencyData.map((item) => {
             const height = Math.max(8, Math.round((item.count / maxDailyCompletions) * 100));
             return (
-              <div key={item.key} className="bar-col">
+              <div key={item.key} className="bar-col" data-tip={`${item.day}: ${item.count} complete`}>
                 <span className="bar-value">{item.count}</span>
                 <div className="bar-track compact">
                   <div className="bar-fill" style={{ height: `${height}%` }} />

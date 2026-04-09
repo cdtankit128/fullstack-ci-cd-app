@@ -1,8 +1,74 @@
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(53, 143, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(53, 143, 255, 0.6);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .login-layout {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 1rem;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
 }
 
 .login-card {
@@ -15,23 +81,27 @@
   backdrop-filter: blur(6px);
   background-image: radial-gradient(circle at 10% 15%, rgba(53, 143, 255, 0.28), transparent 38%),
     radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.2), transparent 42%);
+  animation: slideInUp 0.7s ease-out, shimmer 3s ease-in-out infinite 1s;
 }
 
 .cu-logo {
   width: 84px;
   height: 84px;
   margin-bottom: 0.85rem;
+  animation: scaleIn 0.6s ease-out, float 3s ease-in-out infinite;
 }
 
 .login-card h1 {
   margin: 0;
   font-size: clamp(1.7rem, 2.8vw, 2.4rem);
   letter-spacing: -0.02em;
+  animation: slideInUp 0.8s ease-out 0.2s both;
 }
 
 .login-note {
   color: var(--muted);
   line-height: 1.6;
+  animation: slideInUp 0.8s ease-out 0.4s both;
 }
 
 .dashboard-layout {
@@ -54,12 +124,14 @@
   background: var(--surface);
   box-shadow: var(--shadow);
   backdrop-filter: blur(6px);
+  animation: slideInUp 0.8s ease-out;
 }
 
 .hero-panel {
   padding: 2rem;
   background-image: radial-gradient(circle at 10% 15%, rgba(53, 143, 255, 0.28), transparent 38%),
     radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.2), transparent 42%);
+  animation-delay: 0.1s;
 }
 
 .tag {
@@ -89,6 +161,7 @@
   margin-top: 1.5rem;
   display: grid;
   gap: 0.7rem;
+  animation: slideInUp 0.8s ease-out 0.6s both;
 }
 
 .uid-form label {
@@ -101,11 +174,20 @@
 .task-form input {
   width: 100%;
   padding: 0.85rem 0.95rem;
-  border: 1px solid var(--stroke);
+  border: 2px solid var(--stroke);
   border-radius: 12px;
   background: #fff;
   color: var(--ink);
   font-size: 0.98rem;
+  transition: all 0.3s ease;
+}
+
+.uid-form input:focus,
+.task-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(53, 143, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .uid-form button,
@@ -125,6 +207,19 @@
   color: #fff;
   padding: 0.75rem 1rem;
   font-weight: 700;
+  transition: all 0.3s ease;
+  animation: slideInUp 0.8s ease-out 0.8s both;
+}
+
+.uid-form button:hover,
+.task-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(53, 143, 255, 0.4);
+}
+
+.uid-form button:active,
+.task-form button:active {
+  transform: translateY(-1px);
 }
 
 .session-row {
@@ -210,17 +305,25 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  animation: slideInUp 0.8s ease-out 0.3s both;
 }
 
 .filter-row button {
   background: #fff;
   border: 1px solid var(--stroke);
   padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.filter-row button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(53, 143, 255, 0.2);
 }
 
 .filter-row .active {
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(53, 143, 255, 0.3);
 }
 
 .todo-list {
@@ -238,6 +341,13 @@
   border-radius: 12px;
   background: #fff;
   padding: 0.65rem;
+  animation: slideInUp 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .todo-copy {
@@ -265,6 +375,13 @@
   border: 1px solid #c7dbff;
   padding: 0.38rem 0.6rem;
   font-size: 0.82rem;
+  transition: all 0.3s ease;
+}
+
+.tick:hover {
+  background: #c7dbff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(53, 143, 255, 0.3);
 }
 
 .remove {
@@ -273,6 +390,13 @@
   border: 1px solid #ffd0be;
   padding: 0.38rem 0.6rem;
   font-size: 0.82rem;
+  transition: all 0.3s ease;
+}
+
+.remove:hover {
+  background: #ffd0be;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(156, 39, 6, 0.3);
 }
 
 .empty {
@@ -288,6 +412,7 @@
   margin-top: 1.2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--stroke);
+  animation: slideInUp 0.8s ease-out 0.5s both;
 }
 
 .progress-head {
@@ -314,12 +439,35 @@
   background: #d7e4fb;
   overflow: hidden;
   margin-top: 0.55rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #1858d8 0%, #2d77ff 100%);
-  transition: width 0.25s ease;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 10px rgba(53, 143, 255, 0.5);
+  position: relative;
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: progressPulse 1.5s ease-in-out infinite;
 }
 
 .progress-meta {
@@ -332,8 +480,7 @@
   border: 1px solid var(--stroke);
   border-radius: 14px;
   background: #fff;
-  padding: 0.9rem;
-}
+  padding: 0.9rem;  animation: slideInUp 0.8s ease-out 0.7s both;}
 
 .consistency-card h3 {
   margin: 0;
@@ -350,6 +497,7 @@
 
 .bar-col {
   text-align: center;
+  animation: slideInUp 0.6s ease-out;
 }
 
 .bar-track {
@@ -361,12 +509,20 @@
   align-items: flex-end;
   justify-content: center;
   padding: 3px;
+  transition: all 0.3s ease;
+}
+
+.bar-track:hover {
+  background: #e8f2ff;
+  box-shadow: 0 4px 12px rgba(53, 143, 255, 0.15);
 }
 
 .bar-fill {
   width: 100%;
   border-radius: 6px;
   background: linear-gradient(180deg, #2d77ff 0%, #1858d8 100%);
+  transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(53, 143, 255, 0.3);
 }
 
 .bar-value,

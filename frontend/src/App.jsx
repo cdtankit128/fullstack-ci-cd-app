@@ -65,8 +65,19 @@ function App() {
       return;
     }
 
-    localStorage.setItem("todo_uid", cleanUid);
-    setUid(cleanUid);
+    const normalizedUid = cleanUid.toUpperCase();
+    if (!normalizedUid.startsWith("23BCS")) {
+      window.alert("Use 23BCS as the first 5 characters.");
+      return;
+    }
+
+    if (!/^23BCS\d{5}$/.test(normalizedUid)) {
+      setError("UID must be in the format 23BCS followed by 5 digits.");
+      return;
+    }
+
+    localStorage.setItem("todo_uid", normalizedUid);
+    setUid(normalizedUid);
     setError(null);
   };
 
@@ -132,6 +143,32 @@ function App() {
     }
   };
 
+  if (!uid) {
+    return (
+      <div className="login-layout">
+        <section className="login-card">
+          <p className="tag">Login Required</p>
+          <h1>TO-DO LOGIN PORTAL</h1>
+          <p className="login-note">
+            Enter your UID to continue. Valid UID format is 23BCS followed by 5 digits.
+          </p>
+          <form className="uid-form" onSubmit={handleLogin}>
+            <label htmlFor="uid">ENTER YOUR UID</label>
+            <input
+              id="uid"
+              type="text"
+              value={uidInput}
+              onChange={(e) => setUidInput(e.target.value)}
+              placeholder="23BCS12345"
+            />
+            <button type="submit">Login</button>
+          </form>
+          {error && <p className="error-text">{error}</p>}
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-layout">
       <main className="dashboard-shell">
@@ -142,24 +179,10 @@ function App() {
             Plan your day using a clean workspace connected to your full stack API.
             Sign in with your UID to load your personalized task stream.
           </p>
-          {!uid ? (
-            <form className="uid-form" onSubmit={handleLogin}>
-              <label htmlFor="uid">ENTER YOUR UID</label>
-              <input
-                id="uid"
-                type="text"
-                value={uidInput}
-                onChange={(e) => setUidInput(e.target.value)}
-                placeholder="example: uid-2026-a01"
-              />
-              <button type="submit">Open Dashboard</button>
-            </form>
-          ) : (
-            <div className="session-row">
-              <p>Signed in as <span>{uid}</span></p>
-              <button className="ghost" onClick={handleLogout}>Switch UID</button>
-            </div>
-          )}
+          <div className="session-row">
+            <p>Signed in as <span>{uid}</span></p>
+            <button className="ghost" onClick={handleLogout}>Switch UID</button>
+          </div>
           {error && <p className="error-text">{error}</p>}
         </section>
 

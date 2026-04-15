@@ -22,4 +22,4 @@ dist-ssr
 *.sw?
 
 # Private Data
-public/data/students.json
+# public/data/students.json

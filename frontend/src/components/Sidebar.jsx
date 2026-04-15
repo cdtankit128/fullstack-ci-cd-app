@@ -6,7 +6,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function Sidebar({ uid, onLogout }) {
+export default function Sidebar({ uid, studentName, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -44,6 +44,7 @@ export default function Sidebar({ uid, onLogout }) {
       </div>
 
       <div className="sidebar-profile">
+        {studentName && <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "#e2e8f0", marginBottom: 2 }}>{studentName}</p>}
         <p>Signed in as</p>
         <strong>{uid}</strong>
         <button type="button" className="logout-btn" onClick={onLogout}>

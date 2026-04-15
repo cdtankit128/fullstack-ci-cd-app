@@ -35,8 +35,14 @@ function StatItem({ label, value, subLabel, icon, color }) {
   );
 }
 
-export default function OverviewCards({ uid = "Ankit", progressPercent, stats, consistencyStreak, consistencyData }) {
-  const username = uid && typeof uid === "string" ? uid : "Ankit";
+export default function OverviewCards({ uid = "Ankit", studentName, progressPercent, stats, consistencyStreak, consistencyData }) {
+  // Format name: "SUMIT KUMAR" -> "Sumit"
+  const formatName = (name) => {
+    if (!name) return null;
+    const firstName = name.split(" ")[0];
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+  };
+  const displayName = formatName(studentName) || uid || "Ankit";
   const animatedProgress = useCountUp(progressPercent);
 
   // AI Insights Logic
@@ -73,7 +79,7 @@ export default function OverviewCards({ uid = "Ankit", progressPercent, stats, c
       <Grid container spacing={4} alignItems="center" position="relative" zIndex={1}>
         <Grid item xs={12} lg={5}>
           <Typography variant="h4" fontWeight={700} sx={{ mb: 1.5, letterSpacing: "-0.02em" }}>
-            Welcome back, {username} 👋
+            Welcome back, {displayName} 👋
           </Typography>
           
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mt: 2 }}>

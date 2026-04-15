@@ -6,7 +6,7 @@ import SideStats from "../components/dashboard/SideStats";
 import AnalyticsCharts from "../components/dashboard/AnalyticsCharts";
 
 export default function Dashboard() {
-  const { stats, progressPercent, consistencyData, consistencyStreak, uid, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
+  const { stats, progressPercent, consistencyData, consistencyStreak, uid, studentName, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
 
   // Skeleton Loader for production feel
   if (loading) {
@@ -32,7 +32,8 @@ export default function Dashboard() {
         {/* Top Section */}
         <Grid item xs={12}>
           <OverviewCards 
-            uid={uid} 
+            uid={uid}
+            studentName={studentName}
             progressPercent={progressPercent} 
             stats={stats} 
             consistencyStreak={consistencyStreak}

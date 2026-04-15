@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PersonIcon from "@mui/icons-material/Person";
 import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -16,10 +17,10 @@ import Tasks from "./pages/Tasks";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import { createTodo, deleteTodo, getTodos, updateTodo } from "./services/api";
+import studentsData from "./data/students.json";
 import "./App.css";
 
-const UID_PREFIX = "23BCS";
-const UID_REGEX = /^23BCS\d{5}$/;
+const UID_REGEX = /^23[A-Z]{3}\d{5}$/;
 
 function formatDayLabel(isoDate) {
   return new Date(isoDate).toLocaleDateString("en-US", { weekday: "short" });
@@ -33,6 +34,7 @@ function AppContent() {
   const navigate = useNavigate();
   const [uidInput, setUidInput] = useState("");
   const [uid, setUid] = useState(localStorage.getItem("todo_uid") || "");
+  const [studentName, setStudentName] = useState(localStorage.getItem("todo_student_name") || "");
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [priority, setPriority] = useState("Medium");
@@ -46,6 +48,11 @@ function AppContent() {
 
   const validateUID = (value) => UID_REGEX.test(value);
 
+  const lookupStudentName = (uidValue) => {
+    if (!uidValue || !validateUID(uidValue)) return "";
+    return studentsData[uidValue] || "";
+  };
+
   const formatUidInput = (rawValue) => {
     const uppercase = rawValue.toUpperCase().replace(/[^A-Z0-9]/g, "");
 
@@ -53,13 +60,16 @@ function AppContent() {
       return "";
     }
 
-    if (uppercase.startsWith(UID_PREFIX)) {
-      const digits = uppercase.slice(UID_PREFIX.length).replace(/\D/g, "");
-      return `${UID_PREFIX}${digits}`.slice(0, 10);
+    // Try to preserve any 23B** prefix the user typed
+    const prefixMatch = uppercase.match(/^(23[A-Z]{0,3})/);
+    if (prefixMatch && prefixMatch[1].length >= 4) {
+      const prefix = prefixMatch[1].slice(0, 5);
+      const digits = uppercase.slice(prefix.length).replace(/\D/g, "");
+      return `${prefix}${digits}`.slice(0, 10);
     }
 
-    const digits = uppercase.replace(/\D/g, "");
-    return `${UID_PREFIX}${digits}`.slice(0, 10);
+    // Default: let the user type freely
+    return uppercase.slice(0, 10);
   };
 
   const getUidError = (value) => {
@@ -183,6 +193,9 @@ function AppContent() {
     const formattedValue = formatUidInput(e.target.value);
     setUidInput(formattedValue);
     setError(getUidError(formattedValue) || null);
+    // Live name lookup
+    const name = lookupStudentName(formattedValue);
+    setStudentName(name);
   };
 
   const handleLogin = async (e) => {
@@ -203,8 +216,11 @@ function AppContent() {
     setLoginLoading(true);
 
     try {
+      const resolvedName = lookupStudentName(cleanUid);
       localStorage.setItem("todo_uid", cleanUid);
+      localStorage.setItem("todo_student_name", resolvedName);
       setUid(cleanUid);
+      setStudentName(resolvedName);
       setError(null);
       navigate("/");
     } finally {
@@ -214,8 +230,10 @@ function AppContent() {
 
   const handleLogout = () => {
     localStorage.removeItem("todo_uid");
+    localStorage.removeItem("todo_student_name");
     setUid("");
     setUidInput("");
+    setStudentName("");
     setTodos([]);
     setError(null);
     setEditingTodoId(null);
@@ -326,6 +344,7 @@ function AppContent() {
 
   if (!uid) {
     const isUidValid = validateUID(uidInput);
+    const previewName = lookupStudentName(uidInput);
 
     return (
       <div className="login-layout">
@@ -396,7 +415,7 @@ function AppContent() {
               value={uidInput}
               onChange={handleUidChange}
               error={Boolean(error)}
-              helperText={error || "Format: 23BCS12345"}
+              helperText={error || "Format: 23BCS12345 / 23BET12345"}
               inputProps={{ maxLength: 10 }}
               InputProps={{
                 endAdornment: isUidValid ? (
@@ -434,6 +453,28 @@ function AppContent() {
               }}
             />
 
+            {/* Live name preview */}
+            {previewName && (
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 1.5,
+                  borderRadius: "12px",
+                  background: "rgba(34, 197, 94, 0.12)",
+                  border: "1px solid rgba(34, 197, 94, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  animation: "fadeIn 0.3s ease",
+                }}
+              >
+                <PersonIcon sx={{ color: "#22c55e", fontSize: "1.3rem" }} />
+                <Typography variant="body2" sx={{ color: "#4ade80", fontWeight: 600 }}>
+                  {previewName}
+                </Typography>
+              </Box>
+            )}
+
             <Button
               fullWidth
               variant="contained"
@@ -468,6 +509,7 @@ function AppContent() {
 
   const appContext = {
     uid,
+    studentName,
     loading,
     newTask,
     setNewTask,
@@ -499,7 +541,7 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout uid={uid} onLogout={handleLogout} appContext={appContext} error={error} />}>
+      <Route path="/" element={<Layout uid={uid} studentName={studentName} onLogout={handleLogout} appContext={appContext} error={error} />}>
         <Route index element={<Dashboard />} />
         <Route path="tasks" element={<Tasks />} />
         <Route path="analytics" element={<Analytics />} />

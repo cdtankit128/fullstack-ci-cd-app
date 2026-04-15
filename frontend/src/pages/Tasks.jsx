@@ -109,8 +109,13 @@ export default function Tasks() {
                   disableUnderline: true,
                   sx: { 
                     fontSize: '1.5rem', 
-                    color: '#fff',
-                    '&::placeholder': { color: 'rgba(255,255,255,0.3)', opacity: 1 }
+                    '& .MuiInputBase-input': {
+                      color: '#ffffff',
+                      '&::placeholder': { 
+                        color: 'rgba(255,255,255,0.4)', 
+                        opacity: 1 
+                      }
+                    }
                   }
                 }}
               />
@@ -118,7 +123,7 @@ export default function Tasks() {
               <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Box>
-                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', display: 'block', mb: 0.5 }}>Priority</Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', display: 'block', mb: 0.5 }}>Priority</Typography>
                     <ToggleButtonGroup
                       value={priority}
                       exclusive
@@ -126,12 +131,12 @@ export default function Tasks() {
                       size="small"
                       sx={{ 
                         '& .MuiToggleButton-root': { 
-                          color: 'rgba(255,255,255,0.5)', 
+                          color: '#dae2fd', 
                           border: '1px solid rgba(255,255,255,0.1)',
                           px: 2,
                           '&.Mui-selected': { 
-                            background: 'rgba(139, 92, 246, 0.2)', 
-                            color: '#8b5cf6',
+                            background: 'rgba(139, 92, 246, 0.4)', 
+                            color: '#ffffff',
                             borderColor: '#8b5cf6'
                           } 
                         } 
@@ -144,7 +149,7 @@ export default function Tasks() {
                   </Box>
 
                   <Box>
-                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', display: 'block', mb: 0.5 }}>Due Date</Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', display: 'block', mb: 0.5 }}>Due Date</Typography>
                     <DatePicker 
                       value={dueDate ? dayjs(dueDate) : null}
                       onChange={(val) => setDueDate(val ? val.toISOString() : null)}
@@ -154,7 +159,14 @@ export default function Tasks() {
                           size: 'small',
                           InputProps: { 
                             disableUnderline: true,
-                            sx: { color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }
+                            sx: { 
+                              fontSize: '0.9rem',
+                              '& .MuiInputBase-input': { 
+                                color: '#ffffff',
+                                '&::placeholder': { color: 'rgba(255,255,255,0.4)', opacity: 1 }
+                              },
+                              '& .MuiSvgIcon-root': { color: 'rgba(255,255,255,0.6)' }
+                            }
                           }
                         } 
                       }}
@@ -171,8 +183,14 @@ export default function Tasks() {
                     px: 4, 
                     py: 1,
                     background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                    color: '#ffffff',
                     boxShadow: '0 8px 20px rgba(99,102,241,0.3)',
-                    '&:hover': { transform: 'translateY(-2px)' }
+                    '&:hover': { transform: 'translateY(-2px)' },
+                    '&.Mui-disabled': {
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.4)',
+                      boxShadow: 'none'
+                    }
                   }}
                 >
                   Create Task

@@ -5,7 +5,6 @@ export default function Sidebar({ uid, studentName, onLogout }) {
     { label: "Dashboard", icon: "dashboard", path: "/" },
     { label: "Tasks", icon: "assignment", path: "/tasks" },
     { label: "Analytics", icon: "leaderboard", path: "/analytics" },
-    { label: "Projects", icon: "folder", path: "/projects" },
     { label: "Settings", icon: "settings", path: "/settings" },
   ];
 

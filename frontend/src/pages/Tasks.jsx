@@ -105,17 +105,22 @@ export default function Tasks() {
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
                 disabled={!uid || loading}
+                sx={{
+                  input: {
+                    color: '#ffffff',
+                    '&::placeholder': { 
+                      color: 'rgba(255,255,255,0.6)', 
+                      opacity: 1 
+                    },
+                    '&.Mui-disabled': {
+                      WebkitTextFillColor: 'rgba(255,255,255,0.6)',
+                    }
+                  }
+                }}
                 InputProps={{
                   disableUnderline: true,
                   sx: { 
                     fontSize: '1.5rem', 
-                    '& .MuiInputBase-input': {
-                      color: '#ffffff',
-                      '&::placeholder': { 
-                        color: 'rgba(255,255,255,0.4)', 
-                        opacity: 1 
-                      }
-                    }
                   }
                 }}
               />

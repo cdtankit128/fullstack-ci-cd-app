@@ -7,7 +7,7 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineRounded';
 
 export default function Sidebar({ uid, studentName, onLogout }) {
   const SIDEBAR_ITEMS = [

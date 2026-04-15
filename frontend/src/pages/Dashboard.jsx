@@ -1,8 +1,9 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { Grid, Box, Skeleton } from "@mui/material";
 
 export default function Dashboard() {
   const { stats, progressPercent, consistencyData, consistencyStreak, uid, studentName, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -91,7 +92,10 @@ export default function Dashboard() {
         <div className="lg:col-span-8 flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <h4 className="text-xl font-headline font-bold text-on-surface">Active Tasks</h4>
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-bold hover:bg-primary hover:text-on-primary transition-all duration-300">
+            <button 
+              onClick={() => navigate('/tasks')}
+              className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-bold hover:bg-primary hover:text-on-primary transition-all duration-300"
+            >
               <span className="material-symbols-outlined text-sm" data-icon="add">add</span>
               Add Task
             </button>
@@ -104,7 +108,10 @@ export default function Dashboard() {
             </div>
             <h5 className="text-2xl font-headline font-bold text-on-surface mb-2">No active tasks found</h5>
             <p className="text-on-surface-variant max-w-sm mb-8 leading-relaxed">It looks like your slate is clean. This is the perfect moment to start your journey and conquer new goals!</p>
-            <button className="px-8 py-3 rounded-xl bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold shadow-[0_0_32px_rgba(186,158,255,0.2)] hover:scale-[1.02] active:scale-95 transition-all">
+            <button 
+              onClick={() => navigate('/tasks')}
+              className="px-8 py-3 rounded-xl bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold shadow-[0_0_32px_rgba(186,158,255,0.2)] hover:scale-[1.02] active:scale-95 transition-all"
+            >
               Start your journey!
             </button>
           </div>

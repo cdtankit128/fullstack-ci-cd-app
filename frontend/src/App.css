@@ -709,14 +709,13 @@ button:disabled {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 240px 1fr;
-  background: linear-gradient(180deg, #0f172a, #020617);
+  background: #0c0f14;
 }
 
 .workspace-sidebar {
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(14, 23, 39, 0.86);
-  backdrop-filter: blur(8px);
-  padding: 1.1rem 0.92rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  background: #111419;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

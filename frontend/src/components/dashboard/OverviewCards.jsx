@@ -45,122 +45,106 @@ export default function OverviewCards({ uid = "Ankit", studentName, progressPerc
   const displayName = formatName(studentName) || uid || "Ankit";
   const animatedProgress = useCountUp(progressPercent);
 
-  // AI Insights Logic
-  const bestDayData = consistencyData && consistencyData.length > 0
-    ? consistencyData.reduce((prev, current) => (prev.count > current.count ? prev : current), { count: 0 })
-    : null;
-  
-  const bestDay = bestDayData && bestDayData.count > 0 ? bestDayData.day : "weekdays";
-
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: { xs: 2.5, sm: 3 },
-        backdropFilter: "blur(12px)",
-        background: "linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: "24px",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
-        color: "#f8fafc",
-        position: "relative",
-        overflow: "hidden",
-        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-        "&:hover": {
-          transform: "translateY(-5px)",
-          boxShadow: "0 30px 70px rgba(99,102,241,0.2)",
-          borderColor: "rgba(255,255,255,0.2)"
-        }
-      }}
-    >
-      <Box sx={{ position: "absolute", top: -50, right: -50, width: 250, height: 250, background: "radial-gradient(circle, rgba(139,92,246,0.35) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-      <Box sx={{ position: "absolute", bottom: -80, left: 10, width: 200, height: 200, background: "radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-      
-      <Grid container spacing={3} alignItems="center" position="relative" zIndex={1}>
-        <Grid item xs={12} lg={5}>
-          <Typography variant="h5" fontWeight={700} sx={{ mb: 1, letterSpacing: "-0.02em" }}>
-            Welcome back, {displayName} 👋
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <Typography variant="h4" fontWeight={700} sx={{ letterSpacing: "-0.02em", color: "#fff", mb: 0.5 }}>
+            Welcome back, {displayName}!
           </Typography>
-          
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1.5 }}>
-            <Chip 
-              icon={<AutoAwesomeIcon sx={{ color: '#fbbf24 !important', fontSize: '1.1rem' }} />} 
-              label={`Most productive on ${bestDay}s`} 
-              sx={{ 
-                background: 'rgba(251,191,36,0.15)', 
-                color: '#fbbf24', 
-                border: '1px solid rgba(251,191,36,0.3)',
-                fontWeight: 600,
-                backdropFilter: 'blur(10px)',
-                px: 1
-              }} 
-            />
-            {stats.active > 0 && (
-              <Chip 
-                icon={<ElectricBoltIcon sx={{ color: '#38bdf8 !important', fontSize: '1.1rem' }} />} 
-                label={`2 more for a streak boost!`} 
-                sx={{ 
-                  background: 'rgba(56,189,248,0.15)', 
-                  color: '#38bdf8', 
-                  border: '1px solid rgba(56,189,248,0.3)',
-                  fontWeight: 600,
-                  backdropFilter: 'blur(10px)',
-                  px: 1
-                }} 
-              />
-            )}
-          </Box>
-        </Grid>
-        
-        <Grid item xs={12} lg={7}>
-          <Grid container spacing={3} justifyContent={{ lg: 'flex-end' }}>
-            <Grid item xs={12} sm={4}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box position="relative" display="inline-flex">
-                  <svg width="56" height="56" viewBox="0 0 56 56">
-                    <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4.5" />
-                    <circle cx="28" cy="28" r="24" fill="none" stroke="#8b5cf6" strokeWidth="4.5" 
-                      strokeDasharray="150.8" 
-                      strokeDashoffset={150.8 - (150.8 * progressPercent) / 100} 
-                      strokeLinecap="round" 
-                      style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }} 
-                    />
-                  </svg>
-                  <Box sx={{ top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography variant="caption" component="div" color="white" fontWeight="bold" fontSize="0.8rem">
-                      {animatedProgress}%
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box>
-                  <Typography variant="h6" fontWeight="bold" fontSize="1rem">Efficiency</Typography>
-                  <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.7rem", mt: -0.2 }}>Task success</Typography>
-                </Box>
+          <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.6)" }}>
+            Your productivity is soaring this week. You've completed {animatedProgress}% of your targets so far.
+          </Typography>
+        </Box>
+        <Box textAlign="right">
+          <Typography variant="caption" sx={{ color: "#38bdf8", fontWeight: 700, letterSpacing: "0.1em", display: 'block', textTransform: 'uppercase' }}>
+            NEW ACHIEVEMENT
+          </Typography>
+          <Typography variant="body2" sx={{ color: "#fff", fontWeight: 600, mt: 0.2 }}>
+            Consistent {consistencyStreak || 1}-Day Streak!
+          </Typography>
+        </Box>
+      </Box>
+
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={4}>
+          <Paper elevation={0} sx={{ 
+            p: 3, 
+            borderRadius: "16px", 
+            background: "rgba(255,255,255,0.02)", 
+            backdropFilter: "blur(10px)",
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between'
+          }}>
+            <Box>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mb: 0.5 }}>Efficiency</Typography>
+              <Typography variant="h4" fontWeight={700} sx={{ color: "#fff", mb: 1 }}>{animatedProgress}%</Typography>
+              <Typography variant="caption" sx={{ color: "#38bdf8", fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Box component="span" sx={{ fontSize: '1rem', lineHeight: 1 }}>↗</Box> +5% from yesterday
+              </Typography>
+            </Box>
+            <Box position="relative" display="inline-flex">
+              <svg width="48" height="48" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
+                <circle cx="24" cy="24" r="20" fill="none" stroke="#a855f7" strokeWidth="4" 
+                  strokeDasharray="125.6" 
+                  strokeDashoffset={125.6 - (125.6 * progressPercent) / 100} 
+                  strokeLinecap="round" 
+                  style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }} 
+                />
+              </svg>
+              <Box sx={{ top: 0, left: 0, bottom: 0, right: 0, position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a855f7' }}>
+                <ElectricBoltIcon fontSize="small" />
               </Box>
-            </Grid>
+            </Box>
+          </Paper>
+        </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <StatItem 
-                label="Active" 
-                value={stats.active} 
-                subLabel="Pending items" 
-                icon={<ListAltIcon fontSize="medium" />} 
-                color="56, 189, 248" // light blue
-              />
-            </Grid>
+        <Grid item xs={12} sm={4}>
+          <Paper elevation={0} sx={{ 
+            p: 3, 
+            borderRadius: "16px", 
+            background: "rgba(255,255,255,0.02)", 
+            backdropFilter: "blur(10px)",
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between'
+          }}>
+            <Box>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mb: 0.5 }}>Active Tasks</Typography>
+              <Typography variant="h4" fontWeight={700} sx={{ color: "#fff", mb: 1 }}>{stats.active}</Typography>
+              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)", display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Box component="span" sx={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444' }} />
+                {Math.min(3, stats.active)} Tasks due soon
+              </Typography>
+            </Box>
+            <Box sx={{ width: 40, height: 40, borderRadius: '12px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38bdf8' }}>
+              <ListAltIcon />
+            </Box>
+          </Paper>
+        </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <StatItem 
-                label="Streak" 
-                value={consistencyStreak} 
-                subLabel="Day streak" 
-                icon={<WhatshotIcon fontSize="medium" />} 
-                color="251, 191, 36" // amber
-              />
-            </Grid>
-          </Grid>
+        <Grid item xs={12} sm={4}>
+          <Paper elevation={0} sx={{ 
+            p: 3, 
+            borderRadius: "16px", 
+            background: "rgba(255,255,255,0.02)", 
+            backdropFilter: "blur(10px)",
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between'
+          }}>
+            <Box>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mb: 0.5 }}>Daily Streak</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 1 }}>
+                <Typography variant="h4" fontWeight={700} sx={{ color: "#fff" }}>{consistencyStreak}</Typography>
+                <Typography variant="subtitle1" fontWeight={600} sx={{ color: "#fbbf24" }}>days</Typography>
+              </Box>
+              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)" }}>
+                Personal best: {Math.max(consistencyStreak, 28)} days
+              </Typography>
+            </Box>
+            <Box sx={{ width: 40, height: 40, borderRadius: '12px', background: 'rgba(251,191,36,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fbbf24' }}>
+              <WhatshotIcon />
+            </Box>
+          </Paper>
         </Grid>
       </Grid>
-    </Paper>
+    </Box>
   );
 }

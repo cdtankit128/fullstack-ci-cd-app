@@ -22,34 +22,56 @@ export default function ActiveTasks({ todos, onToggle }) {
         "&:hover": { transform: "scale(1.02)", boxShadow: "0 15px 40px rgba(0,0,0,0.2)" }
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6" fontWeight={600}>Active Tasks</Typography>
-        <Typography variant="body2" color="#8b5cf6" sx={{ cursor: 'pointer', "&:hover": { textDecoration: "underline" } }} onClick={() => navigate('/tasks')}>
-          View All
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}>
+        <Typography variant="h6" fontWeight={700}>Active Tasks</Typography>
+        <Button 
+          variant="contained" 
+          onClick={() => navigate('/tasks')}
+          sx={{ 
+            borderRadius: "8px", 
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "#a855f7",
+            textTransform: "none",
+            fontWeight: 600,
+            px: 2,
+            py: 0.5,
+            boxShadow: "none",
+            "&:hover": { background: "rgba(255,255,255,0.1)", boxShadow: "none" }
+          }}
+        >
+          + Add Task
+        </Button>
       </Box>
 
       {activeTodos.length === 0 ? (
-        <Box sx={{ textAlign: 'center', py: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <RocketLaunchIcon sx={{ fontSize: 36, color: '#fbbf24', mb: 1.5, opacity: 0.9 }} />
-          <Typography variant="h6" mb={0.5} fontWeight={600}>🚀 Start your journey!</Typography>
-          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.6)", mb: 2, maxWidth: '250px' }}>
-            Add your first task and build consistency today.
+        <Box sx={{ textAlign: 'center', py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box sx={{ 
+            width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.03)', 
+            display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3, position: 'relative'
+          }}>
+            <Box sx={{ position: 'absolute', top: 5, right: 10, width: 14, height: 14, borderRadius: '50%', background: '#a855f7', filter: 'blur(2px)' }} />
+            <RocketLaunchIcon sx={{ fontSize: 36, color: 'rgba(255,255,255,0.5)', transform: 'rotate(25deg)' }} />
+          </Box>
+          <Typography variant="h5" mb={1} fontWeight={600} color="#fff">No active tasks found</Typography>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mb: 4, maxWidth: '320px', lineHeight: 1.6 }}>
+            It looks like your slate is clean. This is the perfect moment to start your journey and conquer new goals!
           </Typography>
           <Button 
             variant="contained" 
             onClick={() => navigate('/tasks')}
             sx={{ 
               borderRadius: "12px", 
-              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+              background: "#9333ea",
               textTransform: "none",
-              fontWeight: 600,
-              px: 3,
-              boxShadow: "0 8px 20px rgba(99,102,241,0.3)",
-              "&:hover": { background: "linear-gradient(135deg, #4f46e5, #7c3aed)", boxShadow: "0 10px 25px rgba(99,102,241,0.4)" }
+              fontWeight: 500,
+              px: 4,
+              py: 1,
+              boxShadow: "none",
+              "&:hover": { background: "#7e22ce" }
             }}
           >
-            + Add Task
+            Start your journey!
           </Button>
         </Box>
       ) : (

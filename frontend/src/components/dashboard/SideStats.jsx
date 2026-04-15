@@ -1,59 +1,89 @@
-import { Box, Typography, Paper, Grid } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 
 export default function SideStats({ stats, progressPercent, consistencyStreak }) {
-  const currentDays = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - 3 + i);
-    return {
-      day: d.toLocaleDateString("en-US", { weekday: "narrow" }),
-      date: d.getDate(),
-      isToday: i === 3
-    };
-  });
+  // Mock calendar view for the design
+  const week1 = [
+    { day: "MO", date: 25, active: false },
+    { day: "TU", date: 26, active: false },
+    { day: "WE", date: 27, active: false },
+    { day: "TH", date: 28, active: false },
+    { day: "FR", date: 29, active: false },
+    { day: "SA", date: 30, active: false },
+    { day: "SU", date: 1, active: true },
+  ];
+  
+  const week2 = [
+    { day: "MO", date: 2, active: true },
+    { day: "TU", date: 3, active: true },
+    { day: "WE", date: 4, active: true },
+    { day: "TH", date: 5, active: true },
+    { day: "FR", date: 6, active: true },
+    { day: "SA", date: 7, active: true },
+    { day: "SU", date: 8, active: false },
+  ];
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, height: '100%' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Paper elevation={0} sx={{ p: 1.5, borderRadius: "20px", background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.05))", border: "1px solid rgba(99,102,241,0.2)", backdropFilter: "blur(10px)", color: "#fff", display: "flex", flexDirection: "column", alignItems: "center", transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)", "&:hover": { transform: "scale(1.04)" } }}>
-            <Typography variant="body2" color="rgba(255,255,255,0.7)">Completed</Typography>
-            <Typography variant="h4" fontWeight={700} sx={{ mt: 0.5 }}>{stats.completed}</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper elevation={0} sx={{ p: 1.5, borderRadius: "20px", background: "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(219,39,119,0.05))", border: "1px solid rgba(236,72,153,0.2)", backdropFilter: "blur(10px)", color: "#fff", display: "flex", flexDirection: "column", alignItems: "center", transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)", "&:hover": { transform: "scale(1.04)" } }}>
-            <Typography variant="body2" color="rgba(255,255,255,0.7)">Pending</Typography>
-            <Typography variant="h4" fontWeight={700} sx={{ mt: 0.5 }}>{stats.active}</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
+    <Paper elevation={0} sx={{ p: 4, height: '100%', borderRadius: "20px", background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.03)", color: "#fff" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h6" fontWeight={700}>Streak Tracker</Typography>
+        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>October 2023</Typography>
+      </Box>
 
-      <Paper elevation={0} sx={{ p: 2.5, flexGrow: 1, borderRadius: "24px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(10px)", color: "#fff", display: 'flex', flexDirection: 'column', transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)", "&:hover": { transform: "scale(1.02)", boxShadow: "0 15px 40px rgba(0,0,0,0.2)" } }}>
-        <Typography variant="h6" fontWeight={600} mb={1.5}>Productivity & Streak</Typography>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Box>
-            <Typography variant="h4" fontWeight={700} color="#fbbf24">{consistencyStreak}</Typography>
-            <Typography variant="body2" color="rgba(255,255,255,0.6)">Current Streak 🔥</Typography>
-          </Box>
-          <Box textAlign="right">
-            <Typography variant="h4" fontWeight={700} color="#34d399">{progressPercent}%</Typography>
-            <Typography variant="body2" color="rgba(255,255,255,0.6)">Efficiency 🚀</Typography>
-          </Box>
+      {/* Calendar Grid */}
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', mb: 2, gap: '4px' }}>
+          {week1.map((item, i) => (
+            <Typography key={`day-${i}`} variant="caption" sx={{ color: "rgba(255,255,255,0.6)", fontSize: '0.65rem', fontWeight: 600 }}>{item.day}</Typography>
+          ))}
         </Box>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', gap: '4px', mb: '8px' }}>
+          {week1.map((item, i) => (
+            <Box key={`date1-${i}`} sx={{ 
+              width: 32, height: 32, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              borderRadius: '8px', 
+              background: item.active ? 'rgba(168,85,247,0.2)' : 'transparent',
+              border: item.active ? '1px solid rgba(168,85,247,0.5)' : 'none',
+              color: item.active ? '#fff' : 'rgba(255,255,255,0.2)'
+            }}>
+              <Typography variant="caption" fontWeight={item.active ? 600 : 400}>{item.date}</Typography>
+            </Box>
+          ))}
+        </Box>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', gap: '4px' }}>
+          {week2.map((item, i) => (
+            <Box key={`date2-${i}`} sx={{ 
+              width: 32, height: 32, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              borderRadius: '8px', 
+              background: item.active ? 'rgba(168,85,247,0.1)' : 'transparent',
+              border: item.active ? '1px solid rgba(168,85,247,0.3)' : 'none',
+              color: item.active ? '#fff' : 'rgba(255,255,255,0.4)',
+            }}>
+              <Typography variant="caption" fontWeight={item.active ? 600 : 400}>{item.date}</Typography>
+            </Box>
+          ))}
+        </Box>
+      </Box>
 
-        <Box sx={{ mt: 'auto' }}>
-          <Typography variant="caption" color="rgba(255,255,255,0.6)" mb={0.5} display="block" textTransform="uppercase" letterSpacing="0.05em">Mini Calendar</Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            {currentDays.map((item, i) => (
-              <Box key={i} sx={{ textAlign: 'center', p: "4px 2px", borderRadius: '8px', background: item.isToday ? 'rgba(99,102,241,0.5)' : 'transparent', border: item.isToday ? '1px solid #6366f1' : '1px solid transparent', minWidth: "28px", transition: 'transform 0.2s ease', '&:hover': { transform: 'scale(1.1)' } }}>
-                <Typography variant="caption" sx={{ color: item.isToday ? '#fff' : 'rgba(255,255,255,0.5)', display: 'block', fontSize: "0.6rem", fontWeight: item.isToday ? 600 : 400 }}>{item.day}</Typography>
-                <Typography variant="body2" fontWeight={item.isToday ? 700 : 400} sx={{ color: item.isToday ? '#fff' : 'rgba(255,255,255,0.8)', fontSize: "0.75rem" }}>{item.date}</Typography>
-              </Box>
-            ))}
-          </Box>
+      {/* Progress Bars */}
+      <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)" }}>Consistency</Typography>
+          <Typography variant="body2" fontWeight={700} sx={{ color: "#38bdf8" }}>98%</Typography>
         </Box>
-      </Paper>
-    </Box>
+        <Box sx={{ width: '100%', height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 3 }}>
+          <Box sx={{ width: '98%', height: '100%', background: '#38bdf8', borderRadius: 3 }} />
+        </Box>
+      </Box>
+
+      <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)" }}>Focus Hours</Typography>
+          <Typography variant="body2" fontWeight={700} sx={{ color: "#d946ef" }}>34.5h</Typography>
+        </Box>
+        <Box sx={{ width: '100%', height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 3 }}>
+          <Box sx={{ width: '80%', height: '100%', background: 'linear-gradient(90deg, #a855f7, #d946ef)', borderRadius: 3 }} />
+        </Box>
+      </Box>
+    </Paper>
   );
 }

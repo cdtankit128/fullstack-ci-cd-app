@@ -11,15 +11,13 @@ export default function ActiveTasks({ todos, onToggle }) {
     <Paper
       elevation={0}
       sx={{
-        p: 2.5,
+        p: 3,
         height: '100%',
-        backdropFilter: "blur(12px)",
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "24px",
+        background: "rgba(255,255,255,0.015)",
+        border: "1px solid rgba(255,255,255,0.03)",
+        borderRadius: "20px",
         color: "#f8fafc",
-        transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease",
-        "&:hover": { transform: "scale(1.02)", boxShadow: "0 15px 40px rgba(0,0,0,0.2)" }
+        "&:hover": {}
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}>

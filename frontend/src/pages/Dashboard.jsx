@@ -3,7 +3,7 @@ import { Grid, Box, Skeleton } from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function Dashboard() {
-  const { stats, progressPercent, consistencyData, consistencyStreak, uid, studentName, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
+  const { stats, progressPercent, consistencyData, maxDailyCompletions, consistencyStreak, uid, studentName, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
   const navigate = useNavigate();
 
   const targetTask = visibleTodos?.filter(t => !t.completed && t.priority === "High" && t.dueDate)
@@ -78,6 +78,7 @@ export default function Dashboard() {
           <div className="text-right bg-surface px-6 py-3 rounded-xl border border-outline-variant/20 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
             <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1 opacity-70">Time Remaining</p>
             <p className="text-2xl md:text-3xl font-black font-headline text-error tabular-nums tracking-wider">{timeLeft || "Computing..."}</p>
+            <button onClick={() => handleToggle(targetTask)} className="mt-3 text-xs uppercase tracking-widest bg-error text-white px-4 py-1.5 rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all">Mark Completed</button>
           </div>
         </section>
       )}
@@ -245,43 +246,35 @@ export default function Dashboard() {
               </span>
             </div>
           </div>
-          <div className="relative h-48 flex items-end justify-between gap-4">
-            <div className="flex-1 bg-primary/20 hover:bg-primary/40 rounded-t-lg relative group transition-all" style={{ height: "60%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">60</div>
+            <div className="relative h-48 flex items-end justify-between gap-4">
+              {consistencyData?.map((item) => {
+                const maxVal = Math.max(1, ...consistencyData.map(d => d.count));
+                const heightPct = item.count > 0 ? Math.max(10, Math.round((item.count / maxVal) * 100)) : 5;
+                const isToday = item.day === new Date().toLocaleDateString('en-US', { weekday: 'short' });
+                return (
+                  <div key={item.key} className={`flex-1 ${isToday ? 'bg-primary/90 shadow-[0_0_20px_rgba(186,158,255,0.3)]' : item.count > 0 ? 'bg-primary/60 hover:bg-primary/80' : 'bg-primary/10 hover:bg-primary/30'} rounded-t-lg relative group transition-all duration-500`} style={{ height: `${heightPct}%` }}>
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      {item.count}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flex-1 bg-primary/20 hover:bg-primary/40 rounded-t-lg relative group transition-all" style={{ height: "45%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">45</div>
-            </div>
-            <div className="flex-1 bg-primary/60 hover:bg-primary/80 rounded-t-lg relative group transition-all" style={{ height: "85%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">85</div>
-            </div>
-            <div className="flex-1 bg-primary/20 hover:bg-primary/40 rounded-t-lg relative group transition-all" style={{ height: "30%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">30</div>
-            </div>
-            <div className="flex-1 bg-primary/90 rounded-t-lg relative group shadow-[0_0_20px_rgba(186,158,255,0.3)] transition-all" style={{ height: "95%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">95</div>
-            </div>
-            <div className="flex-1 bg-primary/20 hover:bg-primary/40 rounded-t-lg relative group transition-all" style={{ height: "50%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">50</div>
-            </div>
-            <div className="flex-1 bg-primary/20 hover:bg-primary/40 rounded-t-lg relative group transition-all" style={{ height: "40%" }}>
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">40</div>
+            <div className="flex justify-between mt-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest px-1">
+              {consistencyData?.map((item) => (
+                <span key={item.key}>{item.day}</span>
+              ))}
             </div>
           </div>
-          <div className="flex justify-between mt-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest px-1">
-            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-          </div>
-        </div>
 
         <div className="surface-container p-8 rounded-2xl">
           <h4 className="text-xl font-headline font-bold mb-10">Task Distribution</h4>
           <div className="flex items-center gap-12">
             <div className="relative w-40 h-40">
-              <svg className="w-full h-full" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#22262f" strokeWidth="4"></circle>
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#ba9eff" strokeDasharray="100" strokeDashoffset="60" strokeLinecap="round" strokeWidth="4"></circle>
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#34b5fa" strokeDasharray="25" strokeDashoffset="100" strokeLinecap="round" strokeWidth="4"></circle>
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#ffb148" strokeDasharray="15" strokeDashoffset="75" strokeLinecap="round" strokeWidth="4"></circle>
+                <svg className="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" fill="transparent" r="16" stroke="#22262f" strokeWidth="4"></circle>
+                  <circle cx="18" cy="18" fill="transparent" r="16" stroke="#ba9eff" strokeDasharray="100.53" strokeDashoffset={100.53 - (100.53 * (stats?.total ? stats.active / stats.total : 0))} strokeLinecap="round" strokeWidth="4"></circle>
+                  <circle cx="18" cy="18" fill="transparent" r="16" stroke="#34b5fa" strokeDasharray="100.53" strokeDashoffset={100.53 - (100.53 * (stats?.total ? stats.completed / stats.total : 0))} strokeLinecap="round" strokeWidth="4" className="origin-center" style={{ transform: `rotate(${(stats?.total ? stats.active / stats.total : 0) * 360}deg)` }}></circle>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-xs font-bold text-on-surface-variant">Total</span>

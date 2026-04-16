@@ -49,16 +49,15 @@ function AppContent() {
   const validateUID = (value) => UID_REGEX.test(value);
 
   useEffect(() => {
-    // Load student data using fetch at runtime to completely isolate it from the build graph.
-    // This allows the build to pass in CI even when the file is ignored by Git.
+    // Load student data using fetch at runtime from our Supabase backend
     const loadStudentData = async () => {
       try {
-        const response = await fetch("/data/students.json");
+        const response = await fetch("/api/students");
         if (response.ok) {
           const data = await response.json();
           setStudentsData(data || {});
         } else {
-          console.warn("Student dataset not found at runtime.");
+          console.warn("Failed to fetch students from API.");
         }
       } catch (err) {
         console.warn("Could not fetch student data.", err);

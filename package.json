@@ -1,0 +1,25 @@
+{
+  "name": "fullstack-ci-cd-app",
+  "version": "1.0.0",
+  "description": "**TaskSphere** is an ultra-modern, high-performance, and beautifully designed full-stack task management dashboard. Tailored for students and professionals, it provides an exquisite UI (re-imagined with a dark glassmorphic scheme and vivid purple accents) alongside robust productivity tracking mechanisms like consistency streaks and personalized academic profiles.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdtankit128/TaskSphere.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cdtankit128/TaskSphere/issues"
+  },
+  "homepage": "https://github.com/cdtankit128/TaskSphere#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.2",
+    "pg": "^8.20.0"
+  }
+}

@@ -15,7 +15,7 @@ import {
   Tooltip,
   Fade
 } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useOutletContext } from "react-router-dom";
 import dayjs from "dayjs";
@@ -155,7 +155,9 @@ export default function Tasks() {
 
                   <Box>
                     <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', display: 'block', mb: 0.5 }}>Due Date</Typography>
-                    <DatePicker 
+                    <DateTimePicker 
+                      ampm={false}
+                      format="DD/MM/YYYY HH:mm"
                       value={dueDate ? dayjs(dueDate) : null}
                       onChange={(val) => setDueDate(val ? val.toISOString() : null)}
                       slotProps={{ 
@@ -306,7 +308,7 @@ export default function Tasks() {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                               <CalendarMonthIcon sx={{ fontSize: 14, color: isOverdue ? '#f87171' : 'rgba(255,255,255,0.4)' }} />
                               <Typography variant="caption" sx={{ color: isOverdue ? '#f87171' : 'rgba(255,255,255,0.4)' }}>
-                                {dayjs(todo.dueDate).format('MMM D, YYYY')}
+                                  {dayjs(todo.dueDate).format('MMM D, YYYY HH:mm')}
                               </Typography>
                             </Box>
                           )}

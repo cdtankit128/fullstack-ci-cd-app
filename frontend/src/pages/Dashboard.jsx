@@ -1,9 +1,43 @@
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { Grid, Box, Skeleton } from "@mui/material";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
   const { stats, progressPercent, consistencyData, consistencyStreak, uid, studentName, visibleTodos, handleToggle, loading, setFilter } = useOutletContext();
   const navigate = useNavigate();
+
+  const targetTask = visibleTodos?.filter(t => !t.completed && t.priority === "High" && t.dueDate)
+    .sort((a,b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())[0];
+
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    if (!targetTask) return;
+    
+    const computeTime = () => {
+      const now = new Date().getTime();
+      const target = new Date(targetTask.dueDate).getTime();
+      const difference = target - now;
+
+      if (difference <= 0) {
+        setTimeLeft("Started!");
+      } else {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        let tl = "";
+        if (days > 0) tl += `${days}d `;
+        if (hours > 0 || days > 0) tl += `${hours}h `;
+        tl += `${minutes}m ${seconds}s`;
+        setTimeLeft(tl);
+      }
+    };
+    
+    computeTime();
+    const interval = setInterval(computeTime, 1000);
+    return () => clearInterval(interval);
+  }, [targetTask]);
 
   if (loading) {
     return (
@@ -28,6 +62,25 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
+
+      {/* High Priority Timer Banner */}
+      {targetTask && (
+        <section className="bg-error/10 border border-error/30 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_0_20px_rgba(248,113,113,0.1)]">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-error/20 rounded-full flex items-center justify-center animate-pulse shrink-0">
+              <span className="material-symbols-outlined text-error">campaign</span>
+            </div>
+            <div>
+              <h3 className="text-error font-extrabold text-xl font-headline tracking-tight">High Priority Task Alert</h3>
+              <p className="text-on-surface font-medium mt-1 text-sm md:text-base">"<span className="truncate inline-block max-w-[200px] align-bottom">{targetTask.text}</span>" is scheduled to start on {new Date(targetTask.dueDate).toLocaleDateString()}</p>
+            </div>
+          </div>
+          <div className="text-right bg-surface px-6 py-3 rounded-xl border border-outline-variant/20 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
+            <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1 opacity-70">Time Remaining</p>
+            <p className="text-2xl md:text-3xl font-black font-headline text-error tabular-nums tracking-wider">{timeLeft || "Computing..."}</p>
+          </div>
+        </section>
+      )}
 
       {/* Summary Cards Row */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
